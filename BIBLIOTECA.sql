@@ -47,5 +47,25 @@ CREATE TABLE emprestimos
 	FOREIGN KEY (id_livro) REFERENCES livros(id)
 );
 
+-- Inserir dados na tabela autores
+INSERT INTO autores (nome,nacionalidade) VALUES
+('Machado de Assis', 'Brasileiro'),
+('George Orwell', 'Britânica'),
+('J.K. Rowling', 'Britânico');
 
+-- Inserir dados na tabela categorias
+INSERT INTO categorias (nome) VALUES
+('Romance'),
+('Ficção Científica'),
+('Fantasia');
 
+-- Inserir dados na tabela livros
+INSERT INTO livros(titulo, id_autor, id_categoria, ano_publicacao) VALUES
+('Dom Casmurro', 1, 1, 1899),
+('1984', 2, 2, 1949),
+('Harry Potter e a Pedra Filosofal', 3, 3, 1997);
+
+-- Inserir dados na tabela usuários
+INSERT INTO usuarios (nome, telefone, endereco) VALUES
+('Carlos Silva', '11987654321', 'Rua A, 123'),
+('Ana Souza', '11912345678', 'Rua B, 456');
