@@ -69,3 +69,10 @@ INSERT INTO livros(titulo, id_autor, id_categoria, ano_publicacao) VALUES
 INSERT INTO usuarios (nome, telefone, endereco) VALUES
 ('Carlos Silva', '11987654321', 'Rua A, 123'),
 ('Ana Souza', '11912345678', 'Rua B, 456');
+
+-- Inserir dados na tabela emprestimos
+INSERT INTO emprestimos (id_usuario, id_livro, data_retirada, data_devolucao, status) VALUES
+(1,1, '2024-03-01', '2024-02-15' 'Concluido'),
+(2,2, '2024-03-05', '2024-02-20' 'Em andamento');
+
+SELECT *FROM emprestimos;
