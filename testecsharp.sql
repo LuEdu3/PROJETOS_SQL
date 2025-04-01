@@ -1,5 +1,5 @@
-CREATE DATABASE Biblioteca;
-USE Biblioteca;
+CREATE DATABASE testecsharp;
+USE testecsharp;
 
 CREATE TABLE autores
 (
