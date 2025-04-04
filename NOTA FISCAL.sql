@@ -24,20 +24,10 @@ CREATE TABLE enderecoempresa
     id_empresa INT NOT NULL,
     FOREIGN KEY (id_empresa) REFERENCES empresa(id) ON DELETE CASCADE
 );
-
-CREATE TABLE emissao
-(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	data_emissao DATE NOT NULL,
-    valor DECIMAL(10,2) NOT NULL
-);
-
 CREATE TABLE cliente
 (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	nome VARCHAR(40) NOT NULL,
-    id_endereco INT NOT NULL,
-    id_telefone INT NOT NULL,
 	cpf VARCHAR(11) NOT NULL UNIQUE
 );
 
@@ -57,14 +47,54 @@ CREATE TABLE enderecocliente
     FOREIGN KEY (id_endereco_cliente) REFERENCES cliente(id) ON DELETE CASCADE
 );
 
-CREATE TABLE itens
+CREATE TABLE nota
 (
-	id INT AUTO_INCREMENT PRIMARY KEY
+	id INT AUTO_INCREMENT  PRIMARY KEY,
+    id_cliente INT,
+    quantidade INT NOT NULL,
+    discriminacao VARCHAR(60) NOT NULL,
+    preco_unitario DECIMAL(10,2) NOT NULL,
+    preco_total DECIMAL(10,2) GENERATED ALWAYS AS (preco_unitario * quantidade) STORED,
+    FOREIGN KEY (id_cliente) REFERENCES cliente(id)
 );
-CREATE TABLE produtos
+
+CREATE TABLE totais (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_nota INT NOT NULL,
+    total DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (id_nota) REFERENCES nota(id)
+);
+
+DELIMITER //
+
+CREATE TRIGGER insere_total_automaticamente
+AFTER INSERT ON nota
+FOR EACH ROW
+BEGIN
+  INSERT INTO totais (id_nota, total)
+  VALUES (NEW.id_cliente, NEW.preco_total)
+  ON DUPLICATE KEY UPDATE total = total + NEW.preco_total;
+END //
+
+DELIMITER ;
+
+CREATE TABLE emissao
 (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(40) NOT NULL UNIQUE,
-    descricao TEXT
-    
+	id_total INT,
+	data_emissao DATE NOT NULL,
+    valor_final DECIMAL(10,2),
+    FOREIGN KEY (id_total) REFERENCES totais(id) ON DELETE CASCADE
 );
+DELIMITER //
+
+CREATE TRIGGER trigger_emissao
+AFTER INSERT ON totais
+FOR EACH ROW
+BEGIN
+  INSERT INTO emissao (id_total, valor_final, data_emissao)
+  VALUES (NEW.id, NEW.total, CURDATE());
+END //
+
+DELIMITER ;
+
