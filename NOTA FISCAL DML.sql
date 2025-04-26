@@ -59,48 +59,40 @@ INSERT INTO nota (id_cliente, quantidade, discriminacao, preco_unitario) VALUES
 (2, 2, "Notebook Dell i7 16GB RAM", 5500.00),
 (2, 1, "Monitor LG Ultrawide 29'", 1700.00),
 (2, 1, "Teclado Mecânico RGB", 350.00);
-INSERT INTO totais (id_nota, total) VALUES (2, 7550.00);
-INSERT INTO emissao (id_total, data_emissao, valor_final) VALUES (2, "2025-04-04", 7550.00);
 
 -- Cliente 3 - Carlos Silva
 INSERT INTO nota (id_cliente, quantidade, discriminacao, preco_unitario) VALUES
 (3, 4, "Cadeira Gamer Reclinável", 1200.00),
 (3, 1, "Mouse sem fio Logitech", 250.00),
 (3, 3, "Headset HyperX Cloud II", 450.00);
-INSERT INTO totais (id_nota, total) VALUES (3, 5850.00);
-INSERT INTO emissao (id_total, data_emissao, valor_final) VALUES (3, "2025-04-04", 5850.00);
 
 -- Cliente 4 - Ana Paula
 INSERT INTO nota (id_cliente, quantidade, discriminacao, preco_unitario) VALUES
 (4, 2, "Smartphone Samsung S23 Ultra", 6800.00),
 (4, 2, "Capa protetora transparente", 80.00),
 (4, 1, "Carregador turbo 65W", 250.00);
-INSERT INTO totais (id_nota, total) VALUES (4, 13930.00);
-INSERT INTO emissao (id_total, data_emissao, valor_final) VALUES (4, "2025-04-04", 13930.00);
 
 -- Cliente 5 - João Mendes
 INSERT INTO nota (id_cliente, quantidade, discriminacao, preco_unitario) VALUES
 (5, 1, "Geladeira Brastemp Frost Free", 4200.00),
 (5, 1, "Micro-ondas Electrolux 30L", 600.00),
 (5, 1, "Fogão 5 bocas Brastemp", 2100.00);
-INSERT INTO totais (id_nota, total) VALUES (5, 6900.00);
-INSERT INTO emissao (id_total, data_emissao, valor_final) VALUES (5, "2025-04-04", 6900.00);
 
 -- Cliente 6 - Patricia Lima
 INSERT INTO nota (id_cliente, quantidade, discriminacao, preco_unitario) VALUES
 (6, 3, "Pacote de viagem para Cancun (all inclusive)", 12000.00),
 (6, 2, "Seguro viagem premium", 700.00),
 (6, 1, "Mala Samsonite grande", 900.00);
-INSERT INTO totais (id_nota, total) VALUES (6, 26000.00);
-INSERT INTO emissao (id_total, data_emissao, valor_final) VALUES (6, "2025-04-04", 26000.00);
 
-INSERT INTO totais (id_nota, total) 
-VALUES (1, 21477.00);
-
-INSERT INTO emissao (id_total, data_emissao, valor_final) VALUES
-(1, "2025-04-04", 21477.00);
-
-SELECT * FROM nota WHERE id_cliente = 3;
+INSERT INTO emissao (data_emissao, valor_final, id_cliente)
+SELECT
+	CURDATE() AS emissao_date,
+    SUM(n.preco_total) AS total,
+    n.id_cliente
+    FROM nota n
+    GROUP BY n.id_cliente;
+    
+    SELECT * FROM emissao WHERE id_cliente = 6;
 SELECT * FROM emissao;
-SELECT * FROM totais WHERE id_nota = 2;
-
+SELECT * FROM nota;
+SELECT * FROM totais;

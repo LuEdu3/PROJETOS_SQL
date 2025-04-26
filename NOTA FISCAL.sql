@@ -65,36 +65,11 @@ CREATE TABLE totais (
     FOREIGN KEY (id_nota) REFERENCES nota(id)
 );
 
-DELIMITER //
-
-CREATE TRIGGER insere_total_automaticamente
-AFTER INSERT ON nota
-FOR EACH ROW
-BEGIN
-  INSERT INTO totais (id_nota, total)
-  VALUES (NEW.id_cliente, NEW.preco_total)
-  ON DUPLICATE KEY UPDATE total = total + NEW.preco_total;
-END //
-
-DELIMITER ;
-
 CREATE TABLE emissao
 (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	id_total INT,
+	id_cliente INT NOT NULL,
 	data_emissao DATE NOT NULL,
     valor_final DECIMAL(10,2),
-    FOREIGN KEY (id_total) REFERENCES totais(id) ON DELETE CASCADE
+    FOREIGN KEY (id_cliente) REFERENCES cliente(id)
 );
-DELIMITER //
-
-CREATE TRIGGER trigger_emissao
-AFTER INSERT ON totais
-FOR EACH ROW
-BEGIN
-  INSERT INTO emissao (id_total, valor_final, data_emissao)
-  VALUES (NEW.id, NEW.total, CURDATE());
-END //
-
-DELIMITER ;
-
